@@ -7,20 +7,32 @@ import Button from "../components/ui/Button";
 const schema = z.object({
   nama: z.string().min(1, "Nama harus diisi"),
   email: z.string().email("Email tidak valid"),
-  phone: z.string().min(12, "Nomor telepon minimal 12 digit"),
-  event: z.enum(["Talkshow", "Seminar", "Workshop"] as const, {
-    error: "Pilih salah satu event",
-  }),
+  password: z.string().min(6, "Password minimal 6 karakter"),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Password tidak sama",
+  path: ["confirmPassword"],
 });
 
-export default function EventRegister() {
-  const { register, handleSubmit, formState: { errors } } = useForm({
+export default function Register() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: zodResolver(schema),
   });
 
+  const onSubmit = (data: any) => {
+    console.log(data);
+    // TODO: kirim ke backend (API register)
+  };
+
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border rounded shadow">
-      <form onSubmit={handleSubmit((data) => console.log(data))} className="space-y-4">
+      <h2 className="text-xl font-bold mb-4 text-center">Register Akun</h2>
+
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <FormInput
           text="Nama"
           tipe="text"
@@ -28,6 +40,7 @@ export default function EventRegister() {
           register={register}
           error={errors.nama?.message}
         />
+
         <FormInput
           text="Email"
           tipe="text"
@@ -35,26 +48,22 @@ export default function EventRegister() {
           register={register}
           error={errors.email?.message}
         />
+
         <FormInput
-          text="Nomor Telepon"
-          tipe="text"
-          name="phone"
+          text="Password"
+          tipe="password"
+          name="password"
           register={register}
-          error={errors.phone?.message}
+          error={errors.password?.message}
         />
 
-        <div>
-          <label className="block mb-1 font-medium">Pilih Event</label>
-          <select {...register("event")} className="w-full border rounded p-2">
-            <option value="">-- Pilih Event --</option>
-            <option value="Talkshow">Talkshow</option>
-            <option value="Seminar">Seminar</option>
-            <option value="Workshop">Workshop</option>
-          </select>
-          {errors.event && (
-            <p className="text-red-600 text-sm">{errors.event.message}</p>
-          )}
-        </div>
+        <FormInput
+          text="Konfirmasi Password"
+          tipe="password"
+          name="confirmPassword"
+          register={register}
+          error={errors.confirmPassword?.message}
+        />
 
         <div className="flex justify-end">
           <Button label="Daftar" variant="primary" />
