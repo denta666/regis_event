@@ -75,3 +75,4 @@ export default defineConfig([
 "# regis_event" 
 "# registrasi" 
 "# registrasi" 
+"# new_regis" 

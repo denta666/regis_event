@@ -2,7 +2,7 @@ import Forminput from "../components/ui/Forminput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {z} from "zod";
 import { useForm } from "react-hook-form";
-import { Button } from "../components/ui/Button";
+import Button from "../components/ui/Button";
 
 // schema validasi form login
 const schema = z.object({

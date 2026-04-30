@@ -8,8 +8,6 @@ function App() {
       <Login />
 
       <Register />
-
-      {/* <RegisterEvent /> */}
     </div>
   );
 }
