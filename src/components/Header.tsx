@@ -1,18 +1,18 @@
-import { Home, Info, Users, HelpCircle } from "lucide-react";
-import { NavLink } from "./ui/NavLink";
+import { Home, Laptop, Trophy, SquareUser, Mic, UserCircle } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 export const Header: React.FC = () => {
-  const currentPath = "#";
-
   const menuItems = [
-    { label: "Beranda", href: "#", icon: <Home size={18} /> },
-    { label: "Tentang", href: "#about", icon: <Info size={18} /> },
-    { label: "Narasumber", href: "#speakers", icon: <Users size={18} /> },
-    { label: "FAQ", href: "#faq", icon: <HelpCircle size={18} /> },
+    { label: "Beranda", href: "/", icon: <Home size={18} /> },
+    { label: "Competition", href: "/competition", icon: <Trophy size={18} /> },
+    { label: "Seminar", href: "/seminar", icon: <SquareUser size={18} /> },
+    { label: "Talkshow", href: "/talkshow", icon: <Laptop size={18} /> },
+    { label: "Workshop", href: "/workshop", icon: <Mic size={18} /> },
+    { label: "Login", href: "/login", icon: <UserCircle size={18} /> },
   ];
 
   return (
-    <header className=" bg-white shadow-sm px-6 py-2">
+    <header className="bg-white shadow-sm px-6 py-2">
       <div className="max-w-7xl mx-auto flex justify-between items-center gap-4">
         <div className="logo">
           <img
@@ -21,18 +21,22 @@ export const Header: React.FC = () => {
             className="h-16"
           />
         </div>
-        <div className="nav flex gap-2">
-          {menuItems.map((item) => (
+        <nav className="flex gap-2">
+          {menuItems.map((item, idx) => (
             <NavLink
-              key={item.label}
-              label={item.label}
-              href={item.href}
-              icon={item.icon}
-              // Logika: Jika href sama dengan path saat ini, maka Active
-              isActive={item.href === currentPath}
-            />
+              key={idx}
+              to={item.href}
+              className={({ isActive }) =>
+                `flex items-center gap-2 px-4 py-2 font-medium transition-all duration-200 ${
+                  isActive ? "text-red-900" : "text-slate-600 hover:text-red-900"
+                }`
+              }
+            >
+              {item.icon && <span className="w-5 h-5">{item.icon}</span>}
+              <span>{item.label}</span>
+            </NavLink>
           ))}
-        </div>
+        </nav>
       </div>
     </header>
   );

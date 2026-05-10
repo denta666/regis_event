@@ -1,13 +1,10 @@
-interface labelinput {
+interface LabelInputProps{
     text: string;
     title: string;
-
 }
 
-const LabelInput: React.FC<labelinput> = ({ text, title }) => {
-    return <label htmlFor={text} className="text-semibold text-sm">
-        {title}
-    </label>;
+const LabelInput: React.FC<LabelInputProps> = ({text, title}) =>{
+    return <label htmlFor={text} className="text-semibold test-sm">{title}</label>;
 };
 
 export default LabelInput;

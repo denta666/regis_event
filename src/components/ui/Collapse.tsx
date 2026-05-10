@@ -7,28 +7,37 @@ interface CollapseProps {
 }
 
 const Collapse: React.FC<CollapseProps> = ({ title, description }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
-    <div className="border border-gray-200 rounded-lg">
+    <div className="border-2 border-pink-200 bg-white rounded-xl shadow-[4px_4px_0px_#fee3ec] overflow-hidden">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full p-4 flex items-center justify-between hover:bg-pink-300"
+        className="cursor-pointer w-full px-5 py-5 flex items-center gap-3 text-left"
       >
-        <span>{title}</span>
-        <ChevronDown
-          size={18}
-          className={`text-gray-600 transition-transform ${
-            isOpen ? "rotate-180" : ""
-          }`}
-        />
+        <div className="p-2 bg-gray-100 rounded-lg">
+          <ChevronDown
+            size={20}
+            className={`text-gray-600 transition-transform duration-300 ${
+              isOpen ? "rotate-180" : ""
+            }`}
+          />
+        </div>
+
+        <span className="text-base font-medium text-gray-700">
+          {title}
+        </span>
       </button>
 
-      {isOpen && (
-        <div className="p-4 border-t text-gray-700">
+      <div
+        className={`transition-all duration-300 overflow-hidden ${
+          isOpen ? "max-h-40 px-5 pb-5" : "max-h-0"
+        }`}
+      >
+        <p className="text-gray-500 text-sm leading-relaxed">
           {description}
-        </div>
-      )}
+        </p>
+      </div>
     </div>
   );
 };

@@ -1,91 +1,60 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import FormInput from "./components/ui/Forminput";
-import Button from "./components/ui/Button";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-const schema = z.object({
-  nama: z.string().min(1, "Nama belum diisi"),
-  email: z.string().min(1, "Email belum diisi").email("Email tidak valid"),
-  phone: z
-    .string()
-    .min(1, "Nomor telepon belum diisi")
-    .min(12, "Nomor telepon minimal 12 digit"),
-  event: z.enum(["Talkshow", "Seminar", "Workshop"] as const, {
-    message: "Event belum dipilih",
-  }),
-});
+import Competition from "./pages/Competition";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Beranda from "./pages/Beranda";
+import Seminar from "./pages/Seminar";
+import Talkshow from "./pages/Talkshow";
+import Workshop from "./pages/Workshop";
+
+import MainLayout from "./layouts/MainLayouts";
+import AuthLayout from "./layouts/AuthLayouts";
+
+import CreateCategories from "./pages/dashboard/Categories/CreateCategories";
+import EventList from "./pages/dashboard/Event/EventList";
+import CreateSpeakers from "./pages/dashboard/Speaker/Speaker";
 
 function App() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(schema),
-  });
-
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
-
   return (
-    <div className="container mx-auto mt-10 flex justify-center">
-      <div className="max-w-md w-full p-6 border rounded shadow">
-        <h2 className="text-xl font-bold mb-4 text-center">
-          Register Event
-        </h2>
+    <BrowserRouter>
+      <Routes>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <FormInput
-            text="Nama"
-            tipe="text"
-            name="nama"
-            register={register}
-            error={errors.nama?.message}
+        {/* Main Layout */}
+        <Route element={<MainLayout />}>
+          
+          {/* Public Pages */}
+          <Route path="/" element={<Beranda />} />
+          <Route path="/seminar" element={<Seminar />} />
+          <Route path="/talkshow" element={<Talkshow />} />
+          <Route path="/competition" element={<Competition />} />
+          <Route path="/workshop" element={<Workshop />} />
+
+          {/* Dashboard Pages */}
+          <Route
+            path="/dashboard/categories"
+            element={<CreateCategories />}
           />
 
-          <FormInput
-            text="Email"
-            tipe="text"
-            name="email"
-            register={register}
-            error={errors.email?.message}
+          <Route
+            path="/dashboard/event"
+            element={<EventList />}
           />
 
-          <FormInput
-            text="Nomor Telepon"
-            tipe="text"
-            name="phone"
-            register={register}
-            error={errors.phone?.message}
+          <Route
+            path="/dashboard/speaker"
+            element={<CreateSpeakers />}
           />
+        </Route>
 
-          <div>
-            <label className="block mb-1 font-medium">Pilih Event</label>
-            <select
-              {...register("event")}
-              className="w-full border rounded p-2"
-            >
-              <option value="">-- Pilih Event --</option>
-              <option value="Talkshow">Talkshow</option>
-              <option value="Seminar">Seminar</option>
-              <option value="Workshop">Workshop</option>
-            </select>
+        {/* Auth Layout */}
+        <Route element={<AuthLayout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
 
-            {errors.event && (
-              <p className="text-red-600 text-sm">
-                {errors.event.message as string}
-              </p>
-            )}
-          </div>
-
-          <div className="flex justify-end">
-            <Button label="Daftar" variant="primary" />
-          </div>
-        </form>
-      </div>
-    </div>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
